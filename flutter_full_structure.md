@@ -1,0 +1,329 @@
+# Flutter Project Full Structure
+
+Generated listing of the entire Flutter workspace at c:\NTI\shopio_app
+
+> Note: This file was generated automatically. Let me know if you want a filtered view (e.g., only `lib/`, `android/`, or test files) or a different format (JSON, CSV).
+
+---
+
+- pubspec.yaml
+- pubspec.lock
+- README.md
+- analysis_options.yaml
+- .gitignore
+- .metadata
+
+- android/
+  - build.gradle.kts
+  - gradle.properties
+  - settings.gradle.kts
+  - gradle/
+    - wrapper/
+      - gradle-wrapper.properties
+  - app/
+    - build.gradle.kts
+    - src/
+      - main/
+        - AndroidManifest.xml
+        - kotlin/com/example/shopio_app/MainActivity.kt
+        - res/
+          - mipmap-mdpi/ic_launcher.png
+          - mipmap-hdpi/ic_launcher.png
+          - mipmap-xhdpi/ic_launcher.png
+          - mipmap-xxhdpi/ic_launcher.png
+          - mipmap-xxxhdpi/ic_launcher.png
+          - drawable/launch_background.xml
+          - drawable-v21/launch_background.xml
+          - values/styles.xml
+          - values-night/styles.xml
+      - debug/
+        - AndroidManifest.xml
+      - profile/
+        - AndroidManifest.xml
+
+- ios/
+  - .gitignore
+  - Flutter/
+    - AppFrameworkInfo.plist
+    - Debug.xcconfig
+    - Release.xcconfig
+    - flutter_export_environment.sh
+    - Generated.xcconfig
+    - ephemeral/
+  - Runner/
+    - AppDelegate.swift
+    - GeneratedPluginRegistrant.h
+    - GeneratedPluginRegistrant.m
+    - Info.plist
+    - Runner-Bridging-Header.h
+    - Assets.xcassets/
+      - AppIcon.appiconset/
+        - Icon-App-20x20@1x.png
+        - Icon-App-20x20@2x.png
+        - Icon-App-20x20@3x.png
+        - Icon-App-29x29@1x.png
+        - Icon-App-29x29@2x.png
+        - Icon-App-29x29@3x.png
+        - Icon-App-40x40@1x.png
+        - Icon-App-40x40@2x.png
+        - Icon-App-40x40@3x.png
+        - Icon-App-60x60@2x.png
+        - Icon-App-60x60@3x.png
+        - Icon-App-76x76@1x.png
+        - Icon-App-76x76@2x.png
+        - Icon-App-83.5x83.5@2x.png
+        - Icon-App-1024x1024@1x.png
+        - Contents.json
+      - LaunchImage.imageset/
+        - LaunchImage.png
+        - LaunchImage@2x.png
+        - LaunchImage@3x.png
+        - README.md
+        - Contents.json
+    - Base.lproj/
+      - Main.storyboard
+      - LaunchScreen.storyboard
+    - Runner.xcodeproj/
+      - project.pbxproj
+      - project.xcworkspace/
+        - contents.xcworkspacedata
+        - xcshareddata/
+    - Runner.xcodeproj/
+      - project.xcworkspace/
+        - xcshareddata/
+          - WorkspaceSettings.xcsettings
+          - IDEWorkspaceChecks.plist
+    - Runner.xcworkspace/
+      - contents.xcworkspacedata
+    - RunnerTests/
+      - RunnerTests.swift
+
+- macos/
+  - .gitignore
+  - Flutter/
+    - Flutter-Release.xcconfig
+    - Flutter-Debug.xcconfig
+    - GeneratedPluginRegistrant.swift
+  - Runner/
+    - AppDelegate.swift
+    - MainFlutterWindow.swift
+    - Info.plist
+    - Release.entitlements
+    - DebugProfile.entitlements
+    - Assets.xcassets/
+      - AppIcon.appiconset/
+        - app_icon_16.png
+        - app_icon_32.png
+        - app_icon_64.png
+        - app_icon_128.png
+        - app_icon_256.png
+        - app_icon_512.png
+        - app_icon_1024.png
+        - Contents.json
+    - Runner.xcodeproj/
+      - project.pbxproj
+    - Runner.xcworkspace/
+      - xcshareddata/
+        - IDEWorkspaceChecks.plist
+    - RunnerTests/
+      - RunnerTests.swift
+
+- linux/
+  - .gitignore
+  - CMakeLists.txt
+  - flutter/
+    - generated_plugin_registrant.h
+    - generated_plugin_registrant.cc
+    - generated_plugins.cmake
+    - CMakeLists.txt
+  - runner/
+    - my_application.h
+    - my_application.cc
+    - main.cc
+    - CMakeLists.txt
+
+- windows/
+  - .gitignore
+  - CMakeLists.txt
+  - flutter/
+    - generated_plugin_registrant.h
+    - generated_plugin_registrant.cc
+    - generated_plugins.cmake
+  - runner/
+    - main.cpp
+    - flutter_window.cpp
+    - flutter_window.h
+    - win32_window.cpp
+    - win32_window.h
+    - utils.cpp
+    - utils.h
+    - Runner.rc
+    - resource.h
+    - runner.exe.manifest
+    - resources/
+      - app_icon.ico
+
+- web/
+  - index.html
+  - manifest.json
+  - favicon.png
+  - icons/
+    - Icon-192.png
+    - Icon-512.png
+    - Icon-maskable-192.png
+    - Icon-maskable-512.png
+
+- assets/
+  - icons/
+    - shop_logo.svg
+    - google.svg
+    - apple.svg
+  - images/
+    - banner_summer.svg
+    - lock_3d.svg
+    - avatar_placeholder.svg
+
+- build/
+  - app/
+    - deeplink.json
+    - generated/
+    - intermediates/
+    - kotlin/
+    - outputs/
+    - tmp/
+  - b9e380382112dbcde5b9156dc8c0480d/
+    - _composite.stamp
+    - gen_dart_plugin_registrant.stamp
+    - gen_localizations.stamp
+  - native_assets/
+    - android/
+      - path_provider_android/
+        - generated/
+        - intermediates/
+        - outputs/
+        - tmp/
+      - shared_preferences_android/
+        - generated/
+        - intermediates/
+        - kotlin/
+        - outputs/
+        - tmp/
+  - reports/
+    - problems/
+
+- lib/
+  - main.dart
+  - core/
+    - constants/
+    - routes/
+      - app_routes.dart
+    - theme/
+      - app_theme.dart
+      - cubit/
+        - theme_cubit.dart
+    - utils/
+      - validators.dart
+      - app_strings.dart
+      - app_assets.dart
+    - widgets/
+  - features/
+    - admin/
+      - presentation/
+        - cubit/
+          - add_product_cubit.dart
+          - add_product_state.dart
+      - data/
+        - datasources/
+          - product_remote_datasource.dart
+        - repositories/
+          - product_repository_impl.dart
+    - auth/
+      - presentation/
+        - cubit/
+          - auth_cubit.dart
+          - auth_state.dart
+        - widgets/
+          - auth_text_field.dart
+          - auth_button.dart
+          - social_login_button.dart
+    - cart/
+      - data/
+        - models/
+          - cart_item_model.dart
+      - presentation/
+        - cubit/
+          - cart_cubit.dart
+          - cart_state.dart
+        - widgets/
+          - cart_item_widget.dart
+    - categories/
+    - favorites/
+      - presentation/
+        - cubit/
+          - favorites_cubit.dart
+          - favorites_state.dart
+    - home/
+      - data/
+        - models/
+          - product_model.dart
+          - category_model.dart
+      - presentation/
+        - cubit/
+          - home_cubit.dart
+          - home_state.dart
+        - widgets/
+          - product_item_widget.dart
+          - product_card.dart
+          - home_banner.dart
+          - category_item.dart
+    - onboarding/
+      - presentation/
+        - cubit/
+          - onboarding_cubit.dart
+          - onboarding_state.dart
+        - widgets/
+          - onboarding_page.dart
+    - product_details/
+      - presentation/
+        - cubit/
+          - product_details_cubit.dart
+          - product_details_state.dart
+        - widgets/
+          - review_item.dart
+    - profile/
+      - presentation/
+        - widgets/
+          - profile_option_tile.dart
+    - splash/
+      - presentation/
+        - cubit/
+          - splash_cubit.dart
+          - splash_state.dart
+
+- lib/pages/
+  - onboarding_screen.dart
+  - login_screen.dart
+  - register_screen.dart
+  - forgot_password_screen.dart
+  - otp_screen.dart
+  - reset_password_screen.dart
+  - home_screen.dart
+  - products_list_screen.dart
+  - product_details_screen.dart
+  - categories_screen.dart
+  - cart_screen.dart
+  - favorites_screen.dart
+  - profile_screen.dart
+  - add_product_screen.dart
+  - splash_screen.dart
+
+- test/
+  - widget_test.dart
+  - add_product_screen_test.dart
+
+
+---
+
+Generated on: 2025-12-20
+
+If you want this exported as a JSON tree or filtered to specific folders, tell me which view you prefer and I'll generate it. 
