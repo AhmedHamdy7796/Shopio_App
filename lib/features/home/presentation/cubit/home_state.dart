@@ -16,12 +16,14 @@ class HomeLoaded extends HomeState {
   final List<CategoryModel> categories;
   final List<ProductModel> filteredProducts;
   final String selectedCategory;
+  final bool isLoading;
 
   const HomeLoaded({
     required this.products,
     required this.categories,
     required this.filteredProducts,
     this.selectedCategory = 'All',
+    this.isLoading = false,
   });
 
   @override
@@ -30,6 +32,7 @@ class HomeLoaded extends HomeState {
     categories,
     filteredProducts,
     selectedCategory,
+    isLoading,
   ];
 }
 

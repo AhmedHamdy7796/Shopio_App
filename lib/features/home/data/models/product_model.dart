@@ -6,6 +6,8 @@ class ProductModel {
   final String imageUrl;
   final String category;
   final double rating;
+  final List<String> reviews;
+  final List<String> images;
 
   const ProductModel({
     required this.id,
@@ -15,6 +17,8 @@ class ProductModel {
     required this.imageUrl,
     required this.category,
     this.rating = 4.5,
+    this.images = const [],
+    this.reviews = const [],
   });
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -25,6 +29,16 @@ class ProductModel {
       imageUrl: json['thumbnail'] ?? '',
       category: json['category'] ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      images:
+          (json['images'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      reviews:
+          (json['reviews'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 
@@ -37,6 +51,8 @@ class ProductModel {
       'thumbnail': imageUrl,
       'category': category,
       'rating': rating,
+      'images': images,
+      'reviews': reviews,
     };
   }
 }

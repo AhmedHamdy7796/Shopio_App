@@ -5,7 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shopio_app/core/routes/app_routes.dart';
 
 import 'package:shopio_app/features/splash/presentation/cubit/splash_cubit.dart';
-import 'package:shopio_app/features/auth/data/repositories/auth_repository.dart';
+import 'package:shopio_app/features/auth/domain/repositories/auth_repository.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

@@ -1,23 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import '../../../../core/errors/failures.dart';
+import '../../domain/repositories/product_details_repository.dart';
 
 part 'product_details_state.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
-  ProductDetailsCubit() : super(ProductDetailsInitial());
+  final ProductDetailsRepository productDetailsRepository;
+
+  ProductDetailsCubit({required this.productDetailsRepository})
+    : super(ProductDetailsInitial());
 
   Future<void> loadProductDetails(String productId) async {
     emit(ProductDetailsLoading());
-    await Future.delayed(const Duration(seconds: 1));
-    emit(
-      const ProductDetailsLoaded(
-        reviews: [
-          'Great product! Highly recommended.',
-          'Good value for money.',
-          'Fast delivery and good quality.',
-          'Average, but does the job.',
-        ],
+    final result = await productDetailsRepository.getProductDetails(productId);
+    result.fold(
+      (failure) => emit(
+        ProductDetailsError(
+          failure is ServerFailure ? failure.message ?? 'Error' : 'Error',
+        ),
       ),
+      (product) => emit(ProductDetailsLoaded(reviews: product.reviews)),
     );
   }
 

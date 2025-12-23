@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shopio_app/features/home/data/models/product_model.dart';
-import 'package:shopio_app/core/utils/app_assets.dart';
+import 'package:shopio_app/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:shopio_app/features/favorites/presentation/cubit/favorites_state.dart';
 import 'package:shopio_app/features/product_details/presentation/cubit/product_details_cubit.dart';
 import 'package:shopio_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:shopio_app/features/product_details/presentation/widgets/review_item.dart';
+import 'package:shopio_app/features/product_details/domain/repositories/product_details_repository.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductModel product;
@@ -17,8 +19,9 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          ProductDetailsCubit()..loadProductDetails(product.id),
+      create: (context) => ProductDetailsCubit(
+        productDetailsRepository: context.read<ProductDetailsRepository>(),
+      )..loadProductDetails(product.id),
       child: ProductDetailsView(product: product),
     );
   }
@@ -37,7 +40,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final PageController _pageController = PageController();
   bool _isDescriptionExpanded = false;
   int _quantity = 1;
-  String _selectedColor = 'Blue';
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             Icons.arrow_back,
                             color: Colors.black,
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            } else {
+                              Navigator.pushNamed(context, Routes.home);
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -73,12 +81,25 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         padding: EdgeInsets.all(8.w),
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.favorite_border,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {},
+                          child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                            builder: (context, state) {
+                              final isFav = context
+                                  .read<FavoritesCubit>()
+                                  .isFavorite(widget.product.id);
+                              return IconButton(
+                                icon: Icon(
+                                  isFav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: isFav ? Colors.red : Colors.black,
+                                ),
+                                onPressed: () {
+                                  context.read<FavoritesCubit>().toggleFavorite(
+                                    widget.product,
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -89,25 +110,48 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         children: [
                           PageView(
                             controller: _pageController,
-                            children: [
-                              _buildImagePlaceholder(Colors.blue.shade50),
-                              _buildImagePlaceholder(Colors.red.shade50),
-                              _buildImagePlaceholder(Colors.green.shade50),
-                            ],
+                            children: widget.product.images.isNotEmpty
+                                ? widget.product.images.map((img) {
+                                    return Image.network(
+                                      img,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              _buildImagePlaceholder(
+                                                Colors.grey.shade50,
+                                              ),
+                                    );
+                                  }).toList()
+                                : [
+                                    widget.product.imageUrl.isNotEmpty
+                                        ? Image.network(
+                                            widget.product.imageUrl,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    _buildImagePlaceholder(
+                                                      Colors.grey.shade50,
+                                                    ),
+                                          )
+                                        : _buildImagePlaceholder(
+                                            Colors.blue.shade50,
+                                          ),
+                                  ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 16.h),
-                            child: SmoothPageIndicator(
-                              controller: _pageController,
-                              count: 3,
-                              effect: ExpandingDotsEffect(
-                                dotHeight: 8.h,
-                                dotWidth: 8.h,
-                                activeDotColor: const Color(0xFF0D6EFD),
-                                dotColor: Colors.grey.shade300,
+                          if (widget.product.images.length > 1)
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 16.h),
+                              child: SmoothPageIndicator(
+                                controller: _pageController,
+                                count: widget.product.images.length,
+                                effect: ExpandingDotsEffect(
+                                  dotHeight: 8.h,
+                                  dotWidth: 8.h,
+                                  activeDotColor: const Color(0xFF0D6EFD),
+                                  dotColor: Colors.grey.shade300,
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -118,71 +162,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 20.r,
-                                backgroundColor: Colors.grey.shade200,
-                                child: SvgPicture.asset(
-                                  AppAssets.avatarPlaceholder,
-                                  height: 24.h,
-                                ), // Replaced with SVG
-                              ),
-                              SizedBox(width: 8.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Shopio Store',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
-                                      SizedBox(width: 4.w),
-                                      const Icon(
-                                        Icons.verified,
-                                        size: 14,
-                                        color: Colors.blue,
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    'Online 12 mins ago',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w,
-                                  vertical: 6.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20.r),
-                                ),
-                                child: Text(
-                                  'Chat',
-                                  style: TextStyle(
-                                    color: const Color(0xFF0D6EFD),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 24.h),
-
                           // Title & Price
                           Text(
                             widget.product.title,
@@ -212,41 +191,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFF0D6EFD),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 24.h),
-
-                          // Options (Color/Size)
-                          Text(
-                            'Select Color',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          Row(
-                            children: [
-                              _ColorOption(
-                                color: Colors.blue,
-                                selected: _selectedColor == 'Blue',
-                                onTap: () =>
-                                    setState(() => _selectedColor = 'Blue'),
-                              ),
-                              SizedBox(width: 12.w),
-                              _ColorOption(
-                                color: Colors.red,
-                                selected: _selectedColor == 'Red',
-                                onTap: () =>
-                                    setState(() => _selectedColor = 'Red'),
-                              ),
-                              SizedBox(width: 12.w),
-                              _ColorOption(
-                                color: Colors.black,
-                                selected: _selectedColor == 'Black',
-                                onTap: () =>
-                                    setState(() => _selectedColor = 'Black'),
                               ),
                             ],
                           ),
@@ -419,48 +363,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           child: Icon(Icons.image, size: 80.h, color: Colors.white),
         ),
-      ),
-    );
-  }
-}
-
-class _ColorOption extends StatelessWidget {
-  final Color color;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _ColorOption({
-    required this.color,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 32.h,
-        width: 32.h,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: selected ? Border.all(color: Colors.white, width: 2) : null,
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: color.withValues(alpha: 0.4),
-                    blurRadius: 8,
-                    spreadRadius: 2,
-                  ),
-                ]
-              : null,
-        ),
-        child: selected
-            ? const Center(
-                child: Icon(Icons.check, size: 16, color: Colors.white),
-              )
-            : null,
       ),
     );
   }

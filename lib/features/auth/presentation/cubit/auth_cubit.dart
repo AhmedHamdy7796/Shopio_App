@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../data/repositories/auth_repository.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../../../../core/errors/failures.dart';
 
 part 'auth_state.dart';
 
@@ -11,22 +12,42 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    if (email.isNotEmpty && password.length >= 6) {
-      await authRepository.login(email, password);
-      emit(AuthLoginSuccess());
-    } else {
-      emit(const AuthFailure('Invalid credentials or password too short'));
-    }
+    final result = await authRepository.login(email: email, password: password);
+    result.fold(
+      (failure) => emit(
+        AuthFailure(
+          failure is ServerFailure
+              ? failure.message ?? 'Login failed'
+              : 'Login failed',
+        ),
+      ),
+      (data) => emit(AuthLoginSuccess()),
+    );
   }
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> register(
+    String name,
+    String email,
+    String password,
+    String phone,
+  ) async {
     emit(AuthLoading());
-    if (name.isNotEmpty && email.isNotEmpty && password.length >= 6) {
-      await authRepository.register(name, email, password);
-      emit(AuthRegisterSuccess());
-    } else {
-      emit(const AuthFailure('Please fill all fields correctly'));
-    }
+    final result = await authRepository.register(
+      name: name,
+      email: email,
+      password: password,
+      phone: phone,
+    );
+    result.fold(
+      (failure) => emit(
+        AuthFailure(
+          failure is ServerFailure
+              ? failure.message ?? 'Registration failed'
+              : 'Registration failed',
+        ),
+      ),
+      (data) => emit(AuthRegisterSuccess()),
+    );
   }
 
   Future<void> verifyOtp(String otp) async {

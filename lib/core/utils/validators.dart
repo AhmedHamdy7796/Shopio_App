@@ -6,17 +6,11 @@ class Validator {
       return AppStrings.emailRequired;
     }
 
-    // Adapted regex to handle null safety and input
-    final regex = RegExp(r'^[a-zA-Z0-9._%+-]{6,}@gmail\.com$');
+    // Standard email regex
+    final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
-    if (!email.split("@")[0].contains(RegExp(r'^.{6,}$'))) {
-      return AppStrings.emailMinLength;
-    } else if (!regex.hasMatch(email)) {
-      if (!email.contains("@gmail.com")) {
-        return AppStrings.emailMustEndGmail;
-      } else {
-        return AppStrings.emailInvalidFormat;
-      }
+    if (!regex.hasMatch(email)) {
+      return AppStrings.emailInvalidFormat;
     }
     return null;
   }

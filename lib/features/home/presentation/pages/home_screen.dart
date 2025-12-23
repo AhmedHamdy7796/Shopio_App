@@ -25,6 +25,24 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
 
+  IconData _getCategoryIcon(String slug) {
+    if (slug.contains('beauty')) return Icons.face;
+    if (slug.contains('fragrance')) return Icons.opacity;
+    if (slug.contains('furniture')) return Icons.chair;
+    if (slug.contains('groceries')) return Icons.local_grocery_store;
+    if (slug.contains('home-decoration')) return Icons.home;
+    if (slug.contains('kitchen')) return Icons.kitchen;
+    if (slug.contains('laptops')) return Icons.laptop;
+    if (slug.contains('mens')) return Icons.man;
+    if (slug.contains('womens')) return Icons.woman;
+    if (slug.contains('motorcycle')) return Icons.motorcycle;
+    if (slug.contains('phone')) return Icons.phone_android;
+    if (slug.contains('sunglasses')) return Icons.remove_red_eye;
+    if (slug.contains('tops')) return Icons.checkroom;
+    if (slug.contains('vehicle')) return Icons.directions_car;
+    return Icons.category;
+  }
+
   void _onItemTapped(int index) {
     if (index == 1) {
       Navigator.pushNamed(context, Routes.categories);
@@ -52,9 +70,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white, // Removed for Dark Mode
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white, // Removed for Dark Mode
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.all(12.w),
@@ -76,8 +94,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         title: Text(
           'Shopio',
-          style: TextStyle(
-            color: const Color(0xFF1A1D1E),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 20.sp,
           ),
@@ -190,41 +207,23 @@ class _HomeViewState extends State<HomeView> {
                             context.read<HomeCubit>().filterByCategory('All'),
                       ),
                       SizedBox(width: 12.w),
-                      _CategoryChip(
-                        label: 'Shoes',
-                        isSelected: selectedCategory == 'Shoes',
-                        icon: Icons.directions_run,
-                        onTap: () =>
-                            context.read<HomeCubit>().filterByCategory('Shoes'),
-                      ),
-                      SizedBox(width: 12.w),
-                      _CategoryChip(
-                        label: 'Electronics',
-                        isSelected: selectedCategory == 'Electronics',
-                        icon: Icons.devices,
-                        onTap: () => context.read<HomeCubit>().filterByCategory(
-                          'Electronics',
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      _CategoryChip(
-                        label: 'Watches',
-                        isSelected: selectedCategory == 'Watches',
-                        icon: Icons.watch,
-                        onTap: () => context.read<HomeCubit>().filterByCategory(
-                          'Watches',
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      _CategoryChip(
-                        label: 'Clothes',
-                        isSelected: selectedCategory == 'Clothes',
-                        icon: Icons.checkroom,
-                        onTap: () => context.read<HomeCubit>().filterByCategory(
-                          'Clothes',
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
+                      // Dynamic Categories
+                      // Dynamic Categories
+                      if (state is HomeLoaded)
+                        ...state.categories.map((category) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: _CategoryChip(
+                              label: category.name,
+                              isSelected:
+                                  selectedCategory == category.iconParam,
+                              icon: _getCategoryIcon(category.iconParam),
+                              onTap: () => context
+                                  .read<HomeCubit>()
+                                  .filterByCategory(category.iconParam),
+                            ),
+                          );
+                        }),
                     ],
                   ),
                 );
@@ -261,18 +260,35 @@ class _HomeViewState extends State<HomeView> {
             ),
             SizedBox(height: 16.h),
             SizedBox(
-              height: 280.h,
+              // Remove fixed height constraint for GridView inside Column
+              // Use shrinkWrap and physics
               child: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state is HomeLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is HomeLoaded) {
-                    if (state.filteredProducts.isEmpty) {
-                      return const Center(child: Text("No products found"));
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                    return ListView.builder(
+                    if (state.filteredProducts.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No products found",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      );
+                    }
+                    return GridView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio:
+                            0.53, // Adjusted to fix overflow (0.65 -> 0.53 gives much more height)
+                        crossAxisSpacing: 16.w,
+                        mainAxisSpacing: 16.h,
+                      ),
                       itemCount: state.filteredProducts.length,
                       itemBuilder: (context, index) {
                         return ProductItemWidget(

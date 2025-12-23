@@ -31,6 +31,7 @@ class _RegisterViewState extends State<RegisterView> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
 
@@ -145,6 +146,15 @@ class _RegisterViewState extends State<RegisterView> {
                     ).animate().fadeIn(delay: 500.ms),
 
                     SizedBox(height: 24.h),
+                    AuthTextField(
+                      controller: _phoneController,
+                      label: 'Phone Number',
+                      icon: Icons.phone_outlined,
+                      keyboardType: TextInputType.phone,
+                      validator: Validator.validatePhoneNumber,
+                    ).animate().fadeIn(delay: 550.ms),
+
+                    SizedBox(height: 24.h),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -212,6 +222,7 @@ class _RegisterViewState extends State<RegisterView> {
                             _nameController.text,
                             _emailController.text,
                             _passwordController.text,
+                            _phoneController.text,
                           );
                         }
                       },

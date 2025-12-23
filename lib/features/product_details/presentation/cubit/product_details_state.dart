@@ -19,3 +19,12 @@ class ProductDetailsLoaded extends ProductDetailsState {
   @override
   List<Object> get props => [reviews];
 }
+
+class ProductDetailsError extends ProductDetailsState {
+  final String message;
+
+  const ProductDetailsError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

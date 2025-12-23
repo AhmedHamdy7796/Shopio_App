@@ -14,23 +14,53 @@ import 'package:dio/dio.dart';
 import 'features/admin/data/datasources/product_remote_datasource.dart';
 import 'features/admin/data/repositories/product_repository_impl.dart';
 import 'features/auth/data/datasources/auth_local_datasource.dart';
-import 'features/auth/data/repositories/auth_repository.dart';
+import 'features/auth/data/datasources/auth_remote_datasource.dart';
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/home/data/datasources/home_remote_datasource.dart';
+import 'features/home/data/repositories/home_repository_impl.dart';
+import 'features/home/domain/repositories/home_repository.dart';
+import 'features/product_details/data/datasources/product_details_remote_datasource.dart';
+import 'features/product_details/data/repositories/product_details_repository_impl.dart';
+import 'features/product_details/domain/repositories/product_details_repository.dart';
+import 'core/api/dio_consumer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final dio = Dio();
-  final remoteDataSource = ProductRemoteDataSourceImpl(dio: dio);
-  final productRepository = ProductRepositoryImpl(
-    remoteDataSource: remoteDataSource,
-  );
-
   final sharedPrefs = await SharedPreferences.getInstance();
+  final dio = Dio();
+  final dioConsumer = DioConsumer(client: dio, sharedPreferences: sharedPrefs);
+
+  final productRemoteDataSource = ProductRemoteDataSourceImpl(dio: dio);
+  final productRepository = ProductRepositoryImpl(
+    remoteDataSource: productRemoteDataSource,
+  );
 
   final authLocalDataSource = AuthLocalDataSourceImpl(
     sharedPreferences: sharedPrefs,
   );
-  final authRepository = AuthRepository(localDataSource: authLocalDataSource);
+  final authRemoteDataSource = AuthRemoteDataSourceImpl(
+    apiConsumer: dioConsumer,
+  );
+  final authRepository = AuthRepositoryImpl(
+    remoteDataSource: authRemoteDataSource,
+    localDataSource: authLocalDataSource,
+  );
+
+  final homeRemoteDataSource = HomeRemoteDataSourceImpl(
+    apiConsumer: dioConsumer,
+  );
+  final homeRepository = HomeRepositoryImpl(
+    homeRemoteDataSource: homeRemoteDataSource,
+  );
+
+  final productDetailsRemoteDataSource = ProductDetailsRemoteDataSourceImpl(
+    apiConsumer: dioConsumer,
+  );
+  final productDetailsRepository = ProductDetailsRepositoryImpl(
+    remoteDataSource: productDetailsRemoteDataSource,
+  );
 
   runApp(
     MultiRepositoryProvider(
@@ -39,6 +69,10 @@ void main() async {
           value: productRepository,
         ),
         RepositoryProvider<AuthRepository>.value(value: authRepository),
+        RepositoryProvider<HomeRepository>.value(value: homeRepository),
+        RepositoryProvider<ProductDetailsRepository>.value(
+          value: productDetailsRepository,
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -52,6 +86,7 @@ void main() async {
           BlocProvider(
             create: (context) => HomeCubit(
               productRepository: context.read<ProductRepositoryImpl>(),
+              homeRepository: context.read<HomeRepository>(),
             )..loadHomeData(),
           ),
         ],

@@ -23,7 +23,7 @@ class ProductItemWidget extends StatelessWidget {
         width: 160.w,
         margin: EdgeInsets.only(right: 16.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
@@ -46,13 +46,26 @@ class ProductItemWidget extends StatelessWidget {
                     height: 140.h,
                     width: double.infinity,
                     color: Colors.grey.shade100,
-                    child: Center(
-                      child: Icon(
-                        Icons.image,
-                        size: 50.h,
-                        color: Colors.grey.shade300,
-                      ),
-                    ),
+                    child: product.imageUrl.isNotEmpty
+                        ? Image.network(
+                            product.imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Center(
+                                  child: Icon(
+                                    Icons.error_outline,
+                                    size: 30.h,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                          )
+                        : Center(
+                            child: Icon(
+                              Icons.image,
+                              size: 50.h,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
                   ),
                 ),
                 Positioned(
@@ -179,7 +192,7 @@ class ProductItemWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1A1D1E),
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   SizedBox(height: 4.h),

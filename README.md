@@ -30,3 +30,5 @@ This project makes use of the following packages:
 *   [flutter_animate](https://pub.dev/packages/flutter_animate) - Animations
 *   [pinput](https://pub.dev/packages/pinput) - Pin input
 *   [dio](https://pub.dev/packages/dio) - HTTP client
+*   [dartz](https://pub.dev/packages/dartz) - Functional programming in Dart
+*   [cupertino_icons](https://pub.dev/packages/cupertino_icons) - Default icons for iOS

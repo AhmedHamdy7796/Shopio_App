@@ -6,13 +6,14 @@ import 'package:shopio_app/features/admin/data/repositories/product_repository_i
 import 'package:shopio_app/features/home/data/models/product_model.dart';
 import 'package:shopio_app/features/admin/presentation/pages/add_product_screen.dart';
 import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:shopio_app/features/home/domain/repositories/home_repository.dart';
 
 // Simple Mock Repository
 class MockProductRepository extends ProductRepositoryImpl {
   MockProductRepository() : super(remoteDataSource: null as dynamic);
   @override
   Future<ProductModel> addProduct(ProductModel product) async {
-    return product; // Successful mock return
+    return product;
   }
 
   @override
@@ -26,6 +27,8 @@ class MockHomeCubit extends Cubit<HomeState> implements HomeCubit {
 
   @override
   final ProductRepository productRepository = MockProductRepository();
+  @override
+  final HomeRepository homeRepository = 0 as dynamic;
 
   @override
   void addProduct(ProductModel product) {}
@@ -37,7 +40,10 @@ class MockHomeCubit extends Cubit<HomeState> implements HomeCubit {
   Future<void> deleteProduct(String id) async {}
 
   @override
-  void filterByCategory(String category) {}
+  Future<void> filterByCategory(String category) async {}
+
+  @override
+  Future<void> searchProducts(String query) async {}
 }
 
 void main() {
@@ -57,11 +63,9 @@ void main() {
       ),
     );
 
-    // Verify initial state
     expect(find.text('Add New Product'), findsOneWidget);
     expect(find.text('Submit Product'), findsOneWidget);
 
-    // Enter text
     await tester.enterText(find.byIcon(Icons.title), 'Test Product');
     await tester.enterText(
       find.byIcon(Icons.description_outlined),
@@ -76,10 +80,8 @@ void main() {
 
     await tester.pump();
 
-    // Tap submit
     await tester.tap(find.text('Submit Product'));
-    await tester.pump(); // Start animation
-    await tester.pump(const Duration(milliseconds: 100)); // Ongoing
-    // since mock returns immediately, it might be done.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
   });
 }

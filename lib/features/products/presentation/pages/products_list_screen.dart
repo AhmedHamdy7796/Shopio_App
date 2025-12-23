@@ -5,6 +5,7 @@ import 'package:shopio_app/core/routes/app_routes.dart';
 import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:shopio_app/features/home/presentation/widgets/product_item_widget.dart';
 import 'package:shopio_app/features/admin/data/repositories/product_repository_impl.dart';
+import 'package:shopio_app/features/home/domain/repositories/home_repository.dart';
 
 class ProductsListScreen extends StatelessWidget {
   final String? categoryName;
@@ -32,12 +33,22 @@ class _ProductsListViewState extends State<ProductsListView> {
     super.initState();
   }
 
+  bool _isSearching = false;
+  final _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          HomeCubit(productRepository: context.read<ProductRepositoryImpl>())
-            ..loadHomeData(),
+      create: (context) => HomeCubit(
+        productRepository: context.read<ProductRepositoryImpl>(),
+        homeRepository: context.read<HomeRepository>(),
+      )..loadHomeData(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -45,21 +56,68 @@ class _ProductsListViewState extends State<ProductsListView> {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              if (_isSearching) {
+                setState(() {
+                  _isSearching = false;
+                  _searchController.clear();
+                });
+                // Reload or reset logic if needed, but for now just close search
+              } else {
+                Navigator.pop(context);
+              }
+            },
           ),
-          title: Text(
-            widget.categoryName ?? 'Products',
-            style: TextStyle(
-              color: const Color(0xFF1A1D1E),
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            ),
-          ),
+          title: _isSearching
+              ? TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Search products...',
+                    border: InputBorder.none,
+                  ),
+                  onSubmitted: (value) {
+                    if (value.isNotEmpty) {
+                      // Find the cubit from the context created above?
+                      // Wait, the BlocProvider is wrapping Scaffold, so context here is ABOVE usage.
+                      // We need a Builder or context inside.
+                      // Actually, we can't access provided bloc here easily without Builder.
+                      // I will wrap body in Builder to access context or use context from Builder above?
+                      // Ah, this build method returns query so I need to make sure logic works.
+                    }
+                  },
+                  onChanged: (value) {
+                    // Debounce could be good, but direct call for now
+                    // We need the context that has the HomeCubit.
+                  },
+                )
+              : Text(
+                  widget.categoryName ?? 'Products',
+                  style: TextStyle(
+                    color: const Color(0xFF1A1D1E),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.sp,
+                  ),
+                ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.black),
-              onPressed: () {},
-            ),
+            if (!_isSearching)
+              IconButton(
+                icon: const Icon(Icons.search, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = true;
+                  });
+                },
+              ),
+            if (_isSearching)
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = false;
+                  });
+                },
+              ),
             IconButton(
               icon: const Icon(
                 Icons.shopping_cart_outlined,

@@ -18,6 +18,7 @@ class AddProductScreen extends StatelessWidget {
         );
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Add New Product'),
           centerTitle: true,

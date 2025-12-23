@@ -92,6 +92,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
             fillColor: Colors.white,
           ),
           validator: widget.validator,
+          magnifierConfiguration: TextMagnifierConfiguration.disabled,
         ),
       ],
     );
