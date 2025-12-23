@@ -13,7 +13,7 @@ class HomeBanner extends StatelessWidget {
       height: 180.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        color: const Color(0xFFEDD3C3), // Fallback color from placeholder
+        color: const Color(0xFFEDD3C3),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.r),

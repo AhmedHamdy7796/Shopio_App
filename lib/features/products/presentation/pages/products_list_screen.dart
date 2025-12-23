@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../core/routes/app_routes.dart';
-import '../features/home/presentation/cubit/home_cubit.dart';
-import '../features/home/presentation/widgets/product_item_widget.dart';
-import '../features/admin/data/repositories/product_repository_impl.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:shopio_app/features/home/presentation/widgets/product_item_widget.dart';
+import 'package:shopio_app/features/admin/data/repositories/product_repository_impl.dart';
 
 class ProductsListScreen extends StatelessWidget {
   final String? categoryName;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../core/routes/app_routes.dart';
-import '../core/utils/app_assets.dart';
-import '../core/utils/validators.dart';
-import '../features/auth/presentation/widgets/auth_button.dart';
-import '../features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
+import 'package:shopio_app/core/utils/validators.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_text_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../features/home/data/models/product_model.dart';
-import '../core/utils/app_assets.dart';
-import '../features/product_details/presentation/cubit/product_details_cubit.dart';
-import '../features/cart/presentation/cubit/cart_cubit.dart';
-import '../features/product_details/presentation/widgets/review_item.dart';
+import 'package:shopio_app/features/home/data/models/product_model.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
+import 'package:shopio_app/features/product_details/presentation/cubit/product_details_cubit.dart';
+import 'package:shopio_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:shopio_app/features/product_details/presentation/widgets/review_item.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductModel product;
@@ -118,7 +118,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header: Seller, Rating
                           Row(
                             children: [
                               CircleAvatar(
@@ -253,7 +252,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           ),
                           SizedBox(height: 24.h),
 
-                          // Description
                           Text(
                             'Description',
                             style: TextStyle(
@@ -323,7 +321,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               ),
             ),
 
-            // Bottom Bar
             Container(
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
               decoration: BoxDecoration(

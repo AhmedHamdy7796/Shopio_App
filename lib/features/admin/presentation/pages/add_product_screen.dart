@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../core/theme/app_theme.dart';
-import '../features/home/presentation/cubit/home_cubit.dart';
-import '../../features/admin/data/repositories/product_repository_impl.dart';
-import '../features/admin/presentation/cubit/add_product_cubit.dart';
+import 'package:shopio_app/core/theme/app_theme.dart';
+import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:shopio_app/features/admin/data/repositories/product_repository_impl.dart';
+import 'package:shopio_app/features/admin/presentation/cubit/add_product_cubit.dart';
 
 class AddProductScreen extends StatelessWidget {
   const AddProductScreen({super.key});

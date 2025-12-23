@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialLoginButton extends StatelessWidget {
-  final String icon; // Path to SVG asset
+  final String icon;
   final String? text;
   final VoidCallback onPressed;
   final Color? backgroundColor;

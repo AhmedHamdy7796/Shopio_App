@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../features/home/presentation/cubit/home_cubit.dart';
-import '../features/home/presentation/widgets/home_banner.dart';
-import '../features/home/presentation/widgets/product_item_widget.dart';
-import '../core/routes/app_routes.dart';
+import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:shopio_app/features/home/presentation/widgets/home_banner.dart';
+import 'package:shopio_app/features/home/presentation/widgets/product_item_widget.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,24 +27,20 @@ class _HomeViewState extends State<HomeView> {
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      // Categories
       Navigator.pushNamed(context, Routes.categories);
       return;
     }
     if (index == 2) {
-      // Add (Middle)
       Navigator.pushNamed(context, Routes.addProduct);
       return;
     }
     if (index == 3) {
-      // Inbox
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Inbox feature coming soon!")),
       );
       return;
     }
     if (index == 4) {
-      // Profile
       Navigator.pushNamed(context, Routes.profile);
       return;
     }
@@ -58,7 +54,6 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // ... (Same as before)
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Padding(
@@ -122,7 +117,6 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 16.h),
-            // Search Bar
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: GestureDetector(
@@ -163,7 +157,7 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(width: 12.w),
                     Container(
                       height: 50.h,
-                      width: 50.h, // Square
+                      width: 50.h,
                       decoration: BoxDecoration(
                         color: const Color(0xFFF8F9FA),
                         borderRadius: BorderRadius.circular(12.r),
@@ -175,12 +169,8 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             SizedBox(height: 24.h),
-
-            // Banner
             const HomeBanner(),
             SizedBox(height: 24.h),
-
-            // Categories Chips
             BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 String selectedCategory = 'All';
@@ -201,7 +191,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       SizedBox(width: 12.w),
                       _CategoryChip(
-                        label: 'Shoes', // Matches mock data
+                        label: 'Shoes',
                         isSelected: selectedCategory == 'Shoes',
                         icon: Icons.directions_run,
                         onTap: () =>
@@ -241,8 +231,6 @@ class _HomeViewState extends State<HomeView> {
               },
             ),
             SizedBox(height: 32.h),
-
-            // Trending Now
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Row(
@@ -272,8 +260,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             SizedBox(height: 16.h),
-
-            // Products List (Same as before)
             SizedBox(
               height: 280.h,
               child: BlocBuilder<HomeCubit, HomeState>(

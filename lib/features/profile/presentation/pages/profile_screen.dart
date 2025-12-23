@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../core/routes/app_routes.dart';
-import '../core/theme/cubit/theme_cubit.dart';
-import '../features/auth/presentation/cubit/auth_cubit.dart';
-import '../core/utils/app_assets.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/core/theme/cubit/theme_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -57,7 +57,7 @@ class ProfileView extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 20.h),
-            // Avatar
+
             Center(
               child: Stack(
                 children: [
@@ -106,7 +106,6 @@ class ProfileView extends StatelessWidget {
             ).animate().fadeIn(),
             SizedBox(height: 32.h),
 
-            // Stats
             Container(
               padding: EdgeInsets.all(20.w),
               decoration: BoxDecoration(
@@ -133,7 +132,6 @@ class ProfileView extends StatelessWidget {
             ).animate().slideY(begin: 0.2, end: 0),
             SizedBox(height: 32.h),
 
-            // Settings
             _buildSectionTitle(context, 'Settings'),
             SizedBox(height: 16.h),
             _buildSettingsTile(

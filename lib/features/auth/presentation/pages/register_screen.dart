@@ -2,23 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
-import '../features/auth/presentation/cubit/auth_cubit.dart';
-import '../features/auth/presentation/widgets/auth_button.dart';
-import '../features/auth/presentation/widgets/auth_text_field.dart';
-import '../features/auth/presentation/widgets/social_login_button.dart';
-import '../core/utils/validators.dart';
-import '../core/utils/app_assets.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:shopio_app/core/utils/validators.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: const RegisterView(),
-    );
+    return const RegisterView();
   }
 }
 
@@ -41,7 +39,11 @@ class _RegisterViewState extends State<RegisterView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthRegisterSuccess) {
-          Navigator.pushNamed(context, Routes.home);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.home,
+            (route) => false,
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Success!')),
           );
@@ -266,10 +268,7 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.login,
-                            ); // Or pop
+                            Navigator.pushNamed(context, Routes.login);
                           },
                           child: Text(
                             'Log In',

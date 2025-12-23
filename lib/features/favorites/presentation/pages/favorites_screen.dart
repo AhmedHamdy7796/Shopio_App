@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../features/home/presentation/widgets/product_item_widget.dart';
-import '../features/favorites/presentation/cubit/favorites_cubit.dart';
-import '../features/favorites/presentation/cubit/favorites_state.dart';
+import 'package:shopio_app/features/home/presentation/widgets/product_item_widget.dart';
+import 'package:shopio_app/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:shopio_app/features/favorites/presentation/cubit/favorites_state.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});

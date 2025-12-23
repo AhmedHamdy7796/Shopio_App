@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});

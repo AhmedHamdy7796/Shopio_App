@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
-import '../core/utils/app_assets.dart';
-import '../features/onboarding/presentation/cubit/onboarding_cubit.dart';
-import '../features/onboarding/presentation/widgets/onboarding_page.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
+import 'package:shopio_app/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:shopio_app/features/onboarding/presentation/widgets/onboarding_page.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -72,7 +72,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       isLastPage = index == 2;
                     });
                   },
-                  children: const [
+                  children: [
                     OnboardingPage(
                       title: 'Discover Latest Trends',
                       description:

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +13,8 @@ import 'features/home/presentation/cubit/home_cubit.dart';
 import 'package:dio/dio.dart';
 import 'features/admin/data/datasources/product_remote_datasource.dart';
 import 'features/admin/data/repositories/product_repository_impl.dart';
+import 'features/auth/data/datasources/auth_local_datasource.dart';
+import 'features/auth/data/repositories/auth_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,30 +25,28 @@ void main() async {
     remoteDataSource: remoteDataSource,
   );
 
-  SharedPreferences? prefs;
-  try {
-    prefs = await SharedPreferences.getInstance().timeout(
-      const Duration(seconds: 2),
-      onTimeout: () {
-        debugPrint(
-          "SharedPreferences initialization took too long. Proceeding without prefs.",
-        );
-        throw TimeoutException("SP Timeout");
-      },
-    );
-  } catch (e) {
-    debugPrint("Error initializing prefs: $e");
-  }
+  final sharedPrefs = await SharedPreferences.getInstance();
+
+  final authLocalDataSource = AuthLocalDataSourceImpl(
+    sharedPreferences: sharedPrefs,
+  );
+  final authRepository = AuthRepository(localDataSource: authLocalDataSource);
 
   runApp(
-    RepositoryProvider(
-      create: (context) => productRepository, // Use the instance created above
-      // Or create it here: create: (context) => ProductRepositoryImpl(remoteDataSource: ProductRemoteDataSourceImpl(dio: Dio()))
-      // But we already created it.
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<ProductRepositoryImpl>.value(
+          value: productRepository,
+        ),
+        RepositoryProvider<AuthRepository>.value(value: authRepository),
+      ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => ThemeCubit(prefs: prefs)),
-          BlocProvider(create: (_) => AuthCubit()),
+          BlocProvider(create: (_) => ThemeCubit(prefs: sharedPrefs)),
+          BlocProvider(
+            create: (context) =>
+                AuthCubit(authRepository: context.read<AuthRepository>()),
+          ),
           BlocProvider(create: (_) => FavoritesCubit()),
           BlocProvider(create: (_) => CartCubit()..loadCart()),
           BlocProvider(
@@ -80,7 +79,7 @@ class ShopioApp extends StatelessWidget {
               darkTheme: AppTheme.darkTheme,
               themeMode: themeMode,
               onGenerateRoute: AppRoutes.onGenerateRoute,
-              initialRoute: Routes.onboarding,
+              initialRoute: Routes.splash,
               debugShowCheckedModeBanner: false,
             );
           },

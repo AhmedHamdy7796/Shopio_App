@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
-import '../core/utils/validators.dart';
-import '../features/auth/presentation/widgets/auth_button.dart';
-import '../features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/core/utils/validators.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_text_field.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -72,15 +72,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               SizedBox(height: 8.h),
               AuthTextField(
                 controller: _passwordController,
-                label:
-                    'Password', // Label not used in internal decoration anymore with new design but param needed
+                label: 'Password',
                 icon: Icons.lock_outline,
                 isPassword: true,
                 validator: Validator.validatePassword,
               ).animate().fadeIn(delay: 300.ms),
 
               SizedBox(height: 16.h),
-              // Password Strength Indicator (Mock)
+
               Row(
                 children: [
                   Expanded(

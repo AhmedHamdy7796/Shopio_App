@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
 
-import '../features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:shopio_app/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:shopio_app/features/auth/data/repositories/auth_repository.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -12,8 +13,10 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SplashCubit()..checkStartDestination(),
-      child: const SplashView(), // Extract to view for cleanness
+      create: (context) =>
+          SplashCubit(authRepository: context.read<AuthRepository>())
+            ..checkStartDestination(),
+      child: const SplashView(),
     );
   }
 }

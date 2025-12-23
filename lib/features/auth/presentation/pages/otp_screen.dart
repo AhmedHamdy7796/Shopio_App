@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pinput/pinput.dart';
-import '../core/routes/app_routes.dart';
-import '../features/auth/presentation/cubit/auth_cubit.dart';
-import '../features/auth/presentation/widgets/auth_button.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String email;
@@ -13,11 +13,9 @@ class OtpVerificationScreen extends StatelessWidget {
   const OtpVerificationScreen({super.key, required this.email});
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: _OtpView(email: email),
-    );
+    return _OtpView(email: email);
   }
 }
 
@@ -90,10 +88,7 @@ class _OtpViewState extends State<_OtpView> {
                 SizedBox(height: 40.h),
                 Container(
                   padding: EdgeInsets.all(24.w),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFD0E1FD), // Light blue circle bg
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: Icon(
                     Icons.lock_rounded,
                     size: 48.h,

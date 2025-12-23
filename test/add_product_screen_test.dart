@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopio_app/features/admin/data/repositories/product_repository_impl.dart';
 import 'package:shopio_app/features/home/data/models/product_model.dart';
-import 'package:shopio_app/pages/add_product_screen.dart';
+import 'package:shopio_app/features/admin/presentation/pages/add_product_screen.dart';
 import 'package:shopio_app/features/home/presentation/cubit/home_cubit.dart';
 
 // Simple Mock Repository
-class MockProductRepository extends ProductRepository {
+class MockProductRepository extends ProductRepositoryImpl {
+  MockProductRepository() : super(remoteDataSource: null as dynamic);
   @override
   Future<ProductModel> addProduct(ProductModel product) async {
     return product; // Successful mock return
@@ -47,19 +48,8 @@ void main() {
       MultiBlocProvider(
         providers: [BlocProvider<HomeCubit>(create: (_) => MockHomeCubit())],
         child: RepositoryProvider<ProductRepositoryImpl>(
-          create: (_) => MockProductRepository() as ProductRepositoryImpl,
+          create: (_) => MockProductRepository(),
 
-          // Note: Startlingly, our code uses ProductRepositoryImpl as the type token in context.read<ProductRepositoryImpl>
-          // So we must provide that type.
-          // Ideally we should use the abstract class ProductRepository.
-          // But since I refactored to use generic RepositoryProvider with implicit types or explicit Impl types,
-          // I need to be careful.
-          // In main.dart I used: create: (context) => productRepository (which is Impl).
-          // context.read<ProductRepositoryImpl>() in pages.
-          // So here I need to provide something that satisfies that.
-          // Since MockProductRepository extends ProductRepository (abstract), it IS NOT ProductRepositoryImpl.
-          // This reveals a tight coupling flaw in my refactor (depend on concrete).
-          // But the user said "do it". I will fix the test to verify the logic, but I might need to make Mock extend Impl or just Mock implements Repos.
           child: ScreenUtilInit(
             child: const MaterialApp(home: AddProductScreen()),
           ),

@@ -2,23 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../core/routes/app_routes.dart';
-import '../features/auth/presentation/cubit/auth_cubit.dart';
-import '../features/auth/presentation/widgets/auth_button.dart';
-import '../features/auth/presentation/widgets/auth_text_field.dart';
-import '../core/utils/validators.dart';
-import '../core/utils/app_assets.dart';
-import '../features/auth/presentation/widgets/social_login_button.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:shopio_app/core/utils/validators.dart';
+import 'package:shopio_app/core/utils/app_assets.dart';
+import 'package:shopio_app/features/auth/presentation/widgets/social_login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: const LoginView(),
-    );
+    return const LoginView();
   }
 }
 
@@ -39,7 +37,11 @@ class _LoginViewState extends State<LoginView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoginSuccess) {
-          Navigator.pushReplacementNamed(context, Routes.home);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.home,
+            (route) => false,
+          );
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
@@ -63,7 +65,7 @@ class _LoginViewState extends State<LoginView> {
                         height: 64.h,
                         width: 64.h,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0D6EFD), // Brand Blue
+                          color: const Color(0xFF0D6EFD),
                           borderRadius: BorderRadius.circular(16.r),
                           boxShadow: [
                             BoxShadow(

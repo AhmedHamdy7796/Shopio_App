@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import '../../pages/onboarding_screen.dart';
-import '../../pages/splash_screen.dart';
-import '../../pages/login_screen.dart';
-import '../../pages/register_screen.dart';
-import '../../pages/forgot_password_screen.dart';
-import '../../pages/otp_screen.dart';
-import '../../pages/reset_password_screen.dart';
-import '../../pages/home_screen.dart';
-import '../../pages/product_details_screen.dart';
+import '../../features/onboarding/presentation/pages/onboarding_screen.dart';
+import '../../features/splash/presentation/pages/splash_screen.dart';
+import '../../features/auth/presentation/pages/login_screen.dart';
+import '../../features/auth/presentation/pages/register_screen.dart';
+import '../../features/auth/presentation/pages/forgot_password_screen.dart';
+import '../../features/auth/presentation/pages/otp_screen.dart';
+import '../../features/auth/presentation/pages/reset_password_screen.dart';
+import '../../features/home/presentation/pages/home_screen.dart';
+import '../../features/product_details/presentation/pages/product_details_screen.dart';
 import '../../features/home/data/models/product_model.dart';
-import '../../pages/cart_screen.dart';
-import '../../pages/profile_screen.dart';
-import '../../pages/categories_screen.dart';
-import '../../pages/products_list_screen.dart';
-import '../../pages/favorites_screen.dart';
-import '../../pages/add_product_screen.dart';
+import '../../features/cart/presentation/pages/cart_screen.dart';
+import '../../features/profile/presentation/pages/profile_screen.dart';
+import '../../features/categories/presentation/pages/categories_screen.dart';
+import '../../features/products/presentation/pages/products_list_screen.dart';
+import '../../features/favorites/presentation/pages/favorites_screen.dart';
+import '../../features/admin/presentation/pages/add_product_screen.dart';
 
 class Routes {
   static const String splash = '/';

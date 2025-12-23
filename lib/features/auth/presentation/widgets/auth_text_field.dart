@@ -55,11 +55,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           decoration: InputDecoration(
             hintText: 'Enter your ${widget.label.toLowerCase()}',
             hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14.sp),
-            prefixIcon:
-                null, // Removed Icon as per specific design (or kept if needed, but design has no left icons usually in modern style, strict design adherence)
-            // Design shows simple input with optional right icon.
-            // Let's remove prefix icon for "label above" style typically, or keep it if "icon" param is passed but maybe not used in new design.
-            // The screenshot "Start buying..." has NO prefix icons.
+            prefixIcon: Icon(widget.icon, color: Colors.grey),
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(

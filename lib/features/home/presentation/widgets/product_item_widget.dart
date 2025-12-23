@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/routes/app_routes.dart';
+import 'package:shopio_app/core/routes/app_routes.dart';
 import '../../presentation/cubit/home_cubit.dart';
 import '../../../favorites/presentation/cubit/favorites_cubit.dart';
 import '../../../favorites/presentation/cubit/favorites_state.dart';
@@ -36,7 +36,6 @@ class ProductItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image & Badge & Heart
             Stack(
               children: [
                 ClipRRect(
@@ -54,7 +53,6 @@ class ProductItemWidget extends StatelessWidget {
                         color: Colors.grey.shade300,
                       ),
                     ),
-                    // Image.network(product.imageUrl) would go here
                   ),
                 ),
                 Positioned(
@@ -66,11 +64,11 @@ class ProductItemWidget extends StatelessWidget {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF4848), // Red badge
+                      color: const Color(0xFFFF4848),
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
-                      '-20%', // Mock discount
+                      '-20%',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10.sp,
@@ -194,7 +192,7 @@ class ProductItemWidget extends StatelessWidget {
                       ),
                       SizedBox(width: 4.w),
                       Text(
-                        '4.8 (120)', // Mock rating
+                        '4.8 (120)',
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: const Color(0xFF6C757D),
@@ -211,15 +209,13 @@ class ProductItemWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(
-                            0xFF6C757D,
-                          ), // Detailed design showed greyish/black price
+                          color: const Color(0xFF6C757D),
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(6.w), // Small blue + button
+                        padding: EdgeInsets.all(6.w),
                         decoration: const BoxDecoration(
-                          color: Color(0xFFD0E1FD), // Light blue
+                          color: Color(0xFFD0E1FD),
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
                         child: Icon(
