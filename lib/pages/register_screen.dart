@@ -15,10 +15,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: const RegisterView(),
-    );
+    return const RegisterView();
   }
 }
 
@@ -204,13 +201,6 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                           );
                           return;
-                        }
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthCubit>().register(
-                            _nameController.text,
-                            _emailController.text,
-                            _passwordController.text,
-                          );
                         }
                       },
                     ).animate().fadeIn(delay: 700.ms),

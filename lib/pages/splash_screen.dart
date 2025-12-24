@@ -11,10 +11,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SplashCubit()..checkStartDestination(),
-      child: const SplashView(), // Extract to view for cleanness
-    );
+    return const SplashView();
   }
 }
 

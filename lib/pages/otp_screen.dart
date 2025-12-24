@@ -14,10 +14,7 @@ class OtpVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: _OtpView(email: email),
-    );
+    return _OtpView(email: email);
   }
 }
 

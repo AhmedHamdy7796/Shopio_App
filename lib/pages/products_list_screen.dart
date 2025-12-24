@@ -34,109 +34,101 @@ class _ProductsListViewState extends State<ProductsListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          HomeCubit(productRepository: context.read<ProductRepositoryImpl>())
-            ..loadHomeData(),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            widget.categoryName ?? 'Products',
-            style: TextStyle(
-              color: const Color(0xFF1A1D1E),
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.black),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.shopping_cart_outlined,
-                color: Colors.black,
-              ),
-              onPressed: () => Navigator.pushNamed(context, Routes.cart),
-            ),
-          ],
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: Column(
-          children: [
-            // Filters
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-              child: Row(
-                children: [
-                  _FilterChip(
-                    label: 'Sort by',
-                    icon: Icons.sort,
-                    isSelected: true,
-                  ),
-                  SizedBox(width: 12.w),
-                  _FilterChip(
-                    label: 'Price',
-                    icon: Icons.expand_more,
-                    isSelected: false,
-                  ),
-                  SizedBox(width: 12.w),
-                  _FilterChip(
-                    label: 'Brand',
-                    icon: Icons.expand_more,
-                    isSelected: false,
-                  ),
-                  SizedBox(width: 12.w),
-                  _FilterChip(
-                    label: 'Size',
-                    icon: Icons.expand_more,
-                    isSelected: false,
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  if (state is HomeLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is HomeLoaded) {
-                    // Filter locally if needed or rely on cubit
-                    final products = widget.categoryName != null
-                        ? state.products
-                              .where((p) => p.category == widget.categoryName)
-                              .toList()
-                        : state.products;
-
-                    return GridView.builder(
-                      padding: EdgeInsets.all(24.w),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16.w,
-                        mainAxisSpacing: 16.h,
-                        childAspectRatio: 0.65,
-                      ),
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        return ProductItemWidget(product: products[index]);
-                      },
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
-          ],
+        title: Text(
+          widget.categoryName ?? 'Products',
+          style: TextStyle(
+            color: const Color(0xFF1A1D1E),
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.black),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+            onPressed: () => Navigator.pushNamed(context, Routes.cart),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Filters
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+            child: Row(
+              children: [
+                _FilterChip(
+                  label: 'Sort by',
+                  icon: Icons.sort,
+                  isSelected: true,
+                ),
+                SizedBox(width: 12.w),
+                _FilterChip(
+                  label: 'Price',
+                  icon: Icons.expand_more,
+                  isSelected: false,
+                ),
+                SizedBox(width: 12.w),
+                _FilterChip(
+                  label: 'Brand',
+                  icon: Icons.expand_more,
+                  isSelected: false,
+                ),
+                SizedBox(width: 12.w),
+                _FilterChip(
+                  label: 'Size',
+                  icon: Icons.expand_more,
+                  isSelected: false,
+                ),
+              ],
+            ),
+          ),
+
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is HomeLoaded) {
+                  // Filter locally if needed or rely on cubit
+                  final products = widget.categoryName != null
+                      ? state.products
+                            .where((p) => p.category == widget.categoryName)
+                            .toList()
+                      : state.products;
+
+                  return GridView.builder(
+                    padding: EdgeInsets.all(24.w),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.w,
+                      mainAxisSpacing: 16.h,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return ProductItemWidget(product: products[index]);
+                    },
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
