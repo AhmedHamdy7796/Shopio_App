@@ -6,7 +6,7 @@ import 'package:pinput/pinput.dart';
 import '../core/routes/app_routes.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
 import '../features/auth/presentation/widgets/auth_button.dart';
-import '../features/auth/data/repositories/auth_repository.dart';
+import '../features/auth/domain/repositories/auth_repository.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String email;
