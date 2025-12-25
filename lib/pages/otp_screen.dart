@@ -6,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import '../core/routes/app_routes.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
 import '../features/auth/presentation/widgets/auth_button.dart';
+import '../features/auth/data/repositories/auth_repository.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String email;
@@ -14,7 +15,11 @@ class OtpVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _OtpView(email: email);
+    return BlocProvider(
+      create: (context) =>
+          AuthCubit(authRepository: context.read<AuthRepository>()),
+      child: _OtpView(email: email),
+    );
   }
 }
 

@@ -15,7 +15,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginView();
+    return BlocProvider(
+      create: (context) =>
+          AuthCubit(authRepository: RepositoryProvider.of(context)),
+      child: const LoginView(),
+    );
   }
 }
 
