@@ -122,7 +122,14 @@ class _RegisterViewState extends State<RegisterView> {
                     SizedBox(height: 48.h),
                     AuthTextField(
                       controller: _nameController,
-                      label: 'Full Name',
+                      label: 'First Name',
+                      icon: Icons.person_outline,
+                      validator: Validator.validateUserName,
+                    ).animate().fadeIn(delay: 300.ms),
+                    SizedBox(height: 24.h),
+                    AuthTextField(
+                      controller: _nameController,
+                      label: 'Last Name',
                       icon: Icons.person_outline,
                       validator: Validator.validateUserName,
                     ).animate().fadeIn(delay: 300.ms),
