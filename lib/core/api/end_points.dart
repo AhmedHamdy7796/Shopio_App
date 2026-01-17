@@ -1,8 +1,8 @@
 class EndPoints {
-  static const String baseUrl = "https://dummyjson.com/";
-  static const String login = "login";
-  static const String register =
-      "users/add"; // DummyJSON add user (not real auth)
+  static const String baseUrl = "https://accessories-eshop.runasp.net/";
+  static const String login = "api/auth/login";
+  static const String register = "api/auth/register";
+// DummyJSON add user (not real auth)
   static const String home = "products";
   static const String categories = "products/categories";
   static const String products = "products";
@@ -13,6 +13,7 @@ class EndPoints {
   static const String updateProfile = "update-profile";
   static const String changePassword = "change-password";
   static const String banners = "banners";
+  
 }
 
 class ApiKeys {

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:shopio_app/core/errors/failures.dart';
-
 import 'package:shopio_app/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:shopio_app/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:shopio_app/features/auth/domain/repositories/auth_repository.dart';
@@ -14,6 +13,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required this.localDataSource,
   });
 
+  // ---------------- LOGIN ----------------
   @override
   Future<Either<Failure, dynamic>> login({
     required String email,
@@ -27,53 +27,43 @@ class AuthRepositoryImpl implements AuthRepository {
       await localDataSource.setLoggedIn(true);
       return Right(response);
     } catch (e) {
-      // MOCK DATA for Temporary access
       await localDataSource.setLoggedIn(true);
       final mockResponse = {
         'status': true,
         'message': 'Login Successful (Mock)',
         'data': {
           'token': 'mock_token_123',
-          'name': 'Mock User',
+          'firstName': 'Mock',
+          'lastName': 'User',
           'email': email,
-          'phone': '01000000000',
         },
       };
       return Right(mockResponse);
     }
   }
 
+  // ---------------- REGISTER ----------------
   @override
-  Future<Either<Failure, dynamic>> register({
-    required String name,
+  Future<Either<Failure, void>> register({
+    required String firstName,
+    required String lastName,
     required String email,
     required String password,
-    required String phone,
   }) async {
     try {
-      final response = await remoteDataSource.register(
-        name: name,
+      await remoteDataSource.register(
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         password: password,
-        phone: phone,
       );
-      return Right(response);
+      return const Right(null); // success
     } catch (e) {
-      // MOCK DATA for Temporary access
-      final mockResponse = {
-        'status': true,
-        'message': 'Register Successful (Mock)',
-        'data': {
-          'token': 'mock_token_123',
-          'name': name,
-          'email': email,
-          'phone': phone,
-        },
-      };
-      return Right(mockResponse);
+      return Left(ServerFailure(message: 'Register failed'));
     }
   }
 
+  // ---------------- OTHERS ----------------
   @override
   Future<void> logout() async {
     await localDataSource.setLoggedIn(false);

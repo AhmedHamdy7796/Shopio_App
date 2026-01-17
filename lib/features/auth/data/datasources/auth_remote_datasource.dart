@@ -4,10 +4,10 @@ import 'package:shopio_app/core/api/end_points.dart';
 abstract class AuthRemoteDataSource {
   Future<dynamic> login({required String email, required String password});
   Future<dynamic> register({
-    required String name,
+    required String firstName,
+    required String lastName,
     required String email,
     required String password,
-    required String phone,
   });
 }
 
@@ -30,18 +30,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<dynamic> register({
-    required String name,
+    required String firstName,
+    required String lastName,
     required String email,
     required String password,
-    required String phone,
   }) async {
     final response = await apiConsumer.post(
       EndPoints.register,
       body: {
-        'name': name,
+        'firstName': firstName,
+        'lastName': lastName,   
         'email': email,
         'password': password,
-        'phone': phone,
       },
     );
     return response;

@@ -28,7 +28,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final _nameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -121,18 +122,19 @@ class _RegisterViewState extends State<RegisterView> {
 
                     SizedBox(height: 48.h),
                     AuthTextField(
-                      controller: _nameController,
+                      controller: _firstNameController,
                       label: 'First Name',
                       icon: Icons.person_outline,
                       validator: Validator.validateUserName,
                     ).animate().fadeIn(delay: 300.ms),
                     SizedBox(height: 24.h),
                     AuthTextField(
-                      controller: _nameController,
+                      controller: _lastNameController,
                       label: 'Last Name',
                       icon: Icons.person_outline,
                       validator: Validator.validateUserName,
-                    ).animate().fadeIn(delay: 300.ms),
+                    ).animate().fadeIn(delay: 350.ms),
+
 
                     SizedBox(height: 24.h),
                     AuthTextField(
@@ -226,10 +228,10 @@ class _RegisterViewState extends State<RegisterView> {
                         }
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthCubit>().register(
-                            _nameController.text,
-                            _emailController.text,
+                            _firstNameController.text.trim(),
+                            _lastNameController.text.trim(),
+                            _emailController.text.trim(),
                             _passwordController.text,
-                            _phoneController.text,
                           );
                         }
                       },

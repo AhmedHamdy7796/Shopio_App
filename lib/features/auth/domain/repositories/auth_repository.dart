@@ -6,12 +6,14 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Future<Either<Failure, dynamic>> register({
-    required String name,
+
+  Future<Either<Failure, void>> register({
+    required String firstName,
+    required String lastName,
     required String email,
     required String password,
-    required String phone,
   });
+
   Future<void> logout();
   bool isLoggedIn();
   Future<void> completeOnboarding();

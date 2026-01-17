@@ -8,11 +8,15 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository authRepository;
 
-  AuthCubit({required this.authRepository}) : super(AuthInitial());
+  AuthCubit({required this.authRepository})
+    : super(AuthInitial());
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    final result = await authRepository.login(email: email, password: password);
+    final result = await authRepository.login(
+      email: email,
+      password: password,
+    );
     result.fold(
       (failure) => emit(
         AuthFailure(
@@ -26,17 +30,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> register(
-    String name,
+    String firstName,
+    String lastName,
     String email,
     String password,
-    String phone,
   ) async {
     emit(AuthLoading());
     final result = await authRepository.register(
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       password: password,
-      phone: phone,
     );
     result.fold(
       (failure) => emit(
