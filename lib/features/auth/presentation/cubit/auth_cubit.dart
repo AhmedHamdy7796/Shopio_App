@@ -54,25 +54,22 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> verifyOtp(String otp) async {
+  Future<void> verifyOtp({required String email, required String otp}) async {
     emit(AuthLoading());
-    await Future.delayed(const Duration(seconds: 1));
-    if (otp.length == 4) {
-      // Assuming verification also logs you in, or update repo if needed
-      // await authRepository.loginWithOtp...
-      // For now just keep it simple or call setLoggedIn(true) via repo if we had that method exposed,
-      // but strictly we should use repo methods.
-      // Let's assume verifyOtp is just UI logic for now or add it to repo.
-      // Given the repo mocks login, let's just do manual setLoggedIn via repo if I added it... I didn't add public setLoggedIn.
-      // I'll skip persisting login for OTP in this simplified refactor OR assume login happens after.
-      // Actually, I'll just leave OTP as is but remove direct prefs if I can, but I can't without repo support.
-      // Let's rely on standard login flow or assume OTP success leads to login state.
-      // I'll just emit success. Ideally Repo handles this.
-      emit(AuthOtpSuccess());
-    } else {
-      emit(const AuthFailure('Invalid OTP'));
-    }
+    final result = await authRepository.verifyCode(email: email, code: otp);
+    result.fold(
+      (failure) => emit(
+        AuthFailure(
+          failure is ServerFailure
+              ? failure.message ?? 'Verification failed'
+              : 'Verification failed',
+        ),
+      ),
+      (data) => emit(AuthOtpSuccess()),
+    );
   }
+
+
 
   Future<void> logout() async {
     await authRepository.logout();

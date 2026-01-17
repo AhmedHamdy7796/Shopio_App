@@ -14,6 +14,13 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<Either<Failure, dynamic>> verifyCode({
+    required String email,
+    required String code,
+  });
+
+
+
   Future<void> logout();
   bool isLoggedIn();
   Future<void> completeOnboarding();

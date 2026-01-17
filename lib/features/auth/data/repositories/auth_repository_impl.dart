@@ -63,6 +63,29 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, dynamic>> verifyCode({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      final response = await remoteDataSource.verifyCode(
+        email: email,
+        code: code,
+      );
+      // If verification implies login, persist it here
+      // await localDataSource.setLoggedIn(true); 
+      return Right(response);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      }
+      return Left(ServerFailure(message: 'Invalid code'));
+    }
+  }
+
+
+
   // ---------------- OTHERS ----------------
   @override
   Future<void> logout() async {

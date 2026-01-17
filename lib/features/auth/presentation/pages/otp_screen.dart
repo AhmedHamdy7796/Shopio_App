@@ -28,6 +28,8 @@ class _OtpView extends StatefulWidget {
   State<_OtpView> createState() => _OtpViewState();
 }
 
+
+
 class _OtpViewState extends State<_OtpView> {
   final _pinController = TextEditingController();
 
@@ -108,7 +110,6 @@ class _OtpViewState extends State<_OtpView> {
                 SizedBox(height: 12.h),
                 Text(
                   'We have sent the verification code to your email address ${widget.email}',
-                  // Typo in design "shopio.com" mocked, using real email var
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: const Color(0xFF6C757D),
                     fontSize: 16.sp,
@@ -118,7 +119,7 @@ class _OtpViewState extends State<_OtpView> {
                 SizedBox(height: 48.h),
                 Pinput(
                   controller: _pinController,
-                  length: 4,
+                  length: 6,
                   defaultPinTheme: defaultPinTheme,
                   focusedPinTheme: focusedPinTheme,
                   showCursor: true,
@@ -139,15 +140,14 @@ class _OtpViewState extends State<_OtpView> {
                   text: 'Verify',
                   isLoading: state is AuthLoading,
                   onPressed: () {
-                    if (_pinController.text.length == 4) {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        Routes.home,
-                        (route) => false,
+                    if (_pinController.text.length == 6) {
+                      context.read<AuthCubit>().verifyOtp(
+                        email: widget.email,
+                        otp: _pinController.text,
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter 4 digits')),
+                        const SnackBar(content: Text('Please enter 6 digits')),
                       );
                     }
                   },

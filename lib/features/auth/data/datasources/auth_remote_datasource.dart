@@ -9,6 +9,8 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+  Future<dynamic> verifyCode({required String email, required String code});
+  Future<void> sendEmailOtp({required String email});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -46,4 +48,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
     return response;
   }
+  @override
+  Future<void> sendEmailOtp({required String email}) async {
+    await apiConsumer.post(
+      EndPoints.verifyEmail,
+      body: {'email': email},
+    );
+  }
+
+  @override
+  Future<dynamic> verifyCode({
+    required String email,
+    required String code,
+  }) async {
+    final response = await apiConsumer.post(
+      EndPoints.verifyCode,
+      body: {
+        'email': email,
+        'otp': code,
+      },
+    );
+    return response;
+  }
+
 }
+
