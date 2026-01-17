@@ -41,10 +41,10 @@ class _RegisterViewState extends State<RegisterView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthRegisterSuccess) {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
-            Routes.home,
-            (route) => false,
+            Routes.otpVerification,
+            arguments: _emailController.text.trim(),
           );
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Success!')),
