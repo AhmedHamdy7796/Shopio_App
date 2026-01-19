@@ -8,15 +8,11 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository authRepository;
 
-  AuthCubit({required this.authRepository})
-    : super(AuthInitial());
+  AuthCubit({required this.authRepository}) : super(AuthInitial());
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    final result = await authRepository.login(
-      email: email,
-      password: password,
-    );
+    final result = await authRepository.login(email: email, password: password);
     result.fold(
       (failure) => emit(
         AuthFailure(
@@ -69,7 +65,20 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-
+  Future<void> resendOtp(String email) async {
+    // We don't emit AuthLoading to keep the UI timer visible
+    final result = await authRepository.resendOtp(email: email);
+    result.fold(
+      (failure) => emit(
+        AuthFailure(
+          failure is ServerFailure
+              ? failure.message ?? 'Resend failed'
+              : 'Resend failed',
+        ),
+      ),
+      (_) => emit(AuthResendSuccess()),
+    );
+  }
 
   Future<void> logout() async {
     await authRepository.logout();

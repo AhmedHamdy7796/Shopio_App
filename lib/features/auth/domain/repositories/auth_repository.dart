@@ -19,7 +19,7 @@ abstract class AuthRepository {
     required String code,
   });
 
-
+  Future<Either<Failure, void>> resendOtp({required String email});
 
   Future<void> logout();
   bool isLoggedIn();

@@ -41,19 +41,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       EndPoints.register,
       body: {
         'firstName': firstName,
-        'lastName': lastName,   
+        'lastName': lastName,
         'email': email,
         'password': password,
       },
     );
     return response;
   }
+
   @override
   Future<void> sendEmailOtp({required String email}) async {
-    await apiConsumer.post(
-      EndPoints.verifyEmail,
-      body: {'email': email},
-    );
+    await apiConsumer.post(EndPoints.resendOtp, body: {'email': email});
   }
 
   @override
@@ -63,13 +61,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     final response = await apiConsumer.post(
       EndPoints.verifyCode,
-      body: {
-        'email': email,
-        'otp': code,
-      },
+      body: {'email': email, 'otp': code},
     );
     return response;
   }
-
 }
-

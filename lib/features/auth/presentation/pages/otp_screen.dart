@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,6 @@ class OtpVerificationScreen extends StatelessWidget {
   const OtpVerificationScreen({super.key, required this.email});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return _OtpView(email: email);
   }
@@ -28,10 +28,44 @@ class _OtpView extends StatefulWidget {
   State<_OtpView> createState() => _OtpViewState();
 }
 
-
-
 class _OtpViewState extends State<_OtpView> {
   final _pinController = TextEditingController();
+  Timer? _timer;
+  int _start = 59;
+  bool _isTimerFinished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    setState(() {
+      _start = 59;
+      _isTimerFinished = false;
+    });
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_start == 0) {
+        setState(() {
+          timer.cancel();
+          _isTimerFinished = true;
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pinController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +95,14 @@ class _OtpViewState extends State<_OtpView> {
             Routes.home,
             (route) => false,
           );
+        } else if (state is AuthResendSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Verification code sent successfully'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          _startTimer();
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
@@ -124,12 +166,15 @@ class _OtpViewState extends State<_OtpView> {
                   focusedPinTheme: focusedPinTheme,
                   showCursor: true,
                   onCompleted: (pin) {
-                    // Auto submit or verify
+                    context.read<AuthCubit>().verifyOtp(
+                      email: widget.email,
+                      otp: pin,
+                    );
                   },
                 ).animate().fadeIn(delay: 300.ms),
                 SizedBox(height: 32.h),
                 Text(
-                  'Resend code in 00:59',
+                  'Resend code in 00:${_start.toString().padLeft(2, '0')}',
                   style: TextStyle(
                     color: const Color(0xFF0D6EFD),
                     fontSize: 14.sp,
@@ -164,15 +209,17 @@ class _OtpViewState extends State<_OtpView> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {
-                        // Resend Logic
-                      },
+                      onPressed: _isTimerFinished
+                          ? () {
+                              context.read<AuthCubit>().resendOtp(widget.email);
+                            }
+                          : null,
                       child: Text(
                         'Resend',
                         style: TextStyle(
-                          color: const Color(
-                            0xFF6C757D,
-                          ), // Design looks greyish bold or maybe black. Keeping grey for now.
+                          color: _isTimerFinished
+                              ? const Color(0xFF0D6EFD)
+                              : const Color(0xFF6C757D),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

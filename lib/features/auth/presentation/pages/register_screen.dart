@@ -32,7 +32,6 @@ class _RegisterViewState extends State<RegisterView> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
 
@@ -47,11 +46,16 @@ class _RegisterViewState extends State<RegisterView> {
             arguments: _emailController.text.trim(),
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Registration Success!')),
+            const SnackBar(
+              content: Text('Registration Success!'),
+            ),
           );
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },
@@ -62,7 +66,10 @@ class _RegisterViewState extends State<RegisterView> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             actions: [
@@ -81,11 +88,14 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.w,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 24.h),
                     Center(
@@ -102,21 +112,29 @@ class _RegisterViewState extends State<RegisterView> {
                     SizedBox(height: 32.h),
                     Text(
                       'Join Shopio',
-                      style: Theme.of(context).textTheme.headlineMedium
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1A1D1E),
                             fontSize: 32.sp,
                           ),
                       textAlign: TextAlign.center,
-                    ).animate().fadeIn().slideY(begin: 0.2, end: 0),
+                    ).animate().fadeIn().slideY(
+                      begin: 0.2,
+                      end: 0,
+                    ),
                     SizedBox(height: 12.h),
                     Text(
                       'Start buying and selling today.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: const Color(0xFF6C757D),
-                        fontSize: 16.sp,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(
+                            color: const Color(0xFF6C757D),
+                            fontSize: 16.sp,
+                          ),
                       textAlign: TextAlign.center,
                     ).animate().fadeIn(delay: 200.ms),
 
@@ -135,13 +153,13 @@ class _RegisterViewState extends State<RegisterView> {
                       validator: Validator.validateUserName,
                     ).animate().fadeIn(delay: 350.ms),
 
-
                     SizedBox(height: 24.h),
                     AuthTextField(
                       controller: _emailController,
                       label: 'Email Address',
                       icon: Icons.email_outlined,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType:
+                          TextInputType.emailAddress,
                       validator: Validator.validateEmail,
                     ).animate().fadeIn(delay: 400.ms),
 
@@ -156,17 +174,21 @@ class _RegisterViewState extends State<RegisterView> {
 
                     SizedBox(height: 24.h),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: 24.h,
                           width: 24.h,
                           child: Checkbox(
                             value: _agreedToTerms,
-                            activeColor: const Color(0xFF0D6EFD),
+                            activeColor: const Color(
+                              0xFF0D6EFD,
+                            ),
                             onChanged: (value) {
                               setState(() {
-                                _agreedToTerms = value ?? false;
+                                _agreedToTerms =
+                                    value ?? false;
                               });
                             },
                           ),
@@ -177,23 +199,34 @@ class _RegisterViewState extends State<RegisterView> {
                             text: TextSpan(
                               text: 'I agree to the ',
                               style: TextStyle(
-                                color: const Color(0xFF6C757D),
+                                color: const Color(
+                                  0xFF6C757D,
+                                ),
                                 fontSize: 14.sp,
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Terms & Conditions',
+                                  text:
+                                      'Terms & Conditions',
                                   style: TextStyle(
-                                    color: const Color(0xFF0D6EFD),
-                                    fontWeight: FontWeight.w600,
+                                    color: const Color(
+                                      0xFF0D6EFD,
+                                    ),
+                                    fontWeight:
+                                        FontWeight.w600,
                                   ),
                                 ),
-                                const TextSpan(text: ' and '),
+                                const TextSpan(
+                                  text: ' and ',
+                                ),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
-                                    color: const Color(0xFF0D6EFD),
-                                    fontWeight: FontWeight.w600,
+                                    color: const Color(
+                                      0xFF0D6EFD,
+                                    ),
+                                    fontWeight:
+                                        FontWeight.w600,
                                   ),
                                 ),
                                 const TextSpan(text: '.'),
@@ -210,20 +243,30 @@ class _RegisterViewState extends State<RegisterView> {
                       isLoading: state is AuthLoading,
                       onPressed: () {
                         if (!_agreedToTerms) {
-                          ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
                             const SnackBar(
-                              content: Text('Please agree to the terms.'),
+                              content: Text(
+                                'Please agree to the terms.',
+                              ),
                             ),
                           );
                           return;
                         }
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthCubit>().register(
-                            _firstNameController.text.trim(),
-                            _lastNameController.text.trim(),
-                            _emailController.text.trim(),
-                            _passwordController.text,
-                          );
+                        if (_formKey.currentState!
+                            .validate()) {
+                          context
+                              .read<AuthCubit>()
+                              .register(
+                                _firstNameController.text
+                                    .trim(),
+                                _lastNameController.text
+                                    .trim(),
+                                _emailController.text
+                                    .trim(),
+                                _passwordController.text,
+                              );
                         }
                       },
                     ).animate().fadeIn(delay: 700.ms),
@@ -231,9 +274,15 @@ class _RegisterViewState extends State<RegisterView> {
                     SizedBox(height: 32.h),
                     Row(
                       children: [
-                        Expanded(child: Divider(color: Colors.grey.shade300)),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
                           child: Text(
                             'Or continue with',
                             style: TextStyle(
@@ -242,7 +291,11 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                           ),
                         ),
-                        Expanded(child: Divider(color: Colors.grey.shade300)),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
                       ],
                     ),
 
@@ -252,7 +305,9 @@ class _RegisterViewState extends State<RegisterView> {
                         SocialLoginButton(
                           icon: AppAssets.apple,
                           text: 'Sign up with Apple',
-                          backgroundColor: const Color(0xFF1A1D1E),
+                          backgroundColor: const Color(
+                            0xFF1A1D1E,
+                          ),
                           textColor: Colors.white,
                           onPressed: () {},
                         ),
@@ -268,7 +323,8 @@ class _RegisterViewState extends State<RegisterView> {
 
                     SizedBox(height: 40.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                          MainAxisAlignment.center,
                       children: [
                         Text(
                           "Already have an account?",
@@ -279,12 +335,17 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.login);
+                            Navigator.pushNamed(
+                              context,
+                              Routes.login,
+                            );
                           },
                           child: Text(
                             'Log In',
                             style: TextStyle(
-                              color: const Color(0xFF0D6EFD),
+                              color: const Color(
+                                0xFF0D6EFD,
+                              ),
                               fontWeight: FontWeight.bold,
                               fontSize: 15.sp,
                             ),

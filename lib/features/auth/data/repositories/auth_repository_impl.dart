@@ -74,7 +74,7 @@ class AuthRepositoryImpl implements AuthRepository {
         code: code,
       );
       // If verification implies login, persist it here
-      // await localDataSource.setLoggedIn(true); 
+      // await localDataSource.setLoggedIn(true);
       return Right(response);
     } catch (e) {
       if (e is ServerFailure) {
@@ -84,7 +84,18 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-
+  @override
+  Future<Either<Failure, void>> resendOtp({required String email}) async {
+    try {
+      await remoteDataSource.sendEmailOtp(email: email);
+      return const Right(null);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      }
+      return Left(ServerFailure(message: 'Failed to resend OTP'));
+    }
+  }
 
   // ---------------- OTHERS ----------------
   @override

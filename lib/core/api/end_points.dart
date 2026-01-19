@@ -4,6 +4,7 @@ class EndPoints {
   static const String register = "api/auth/register";
   static const String verifyCode = "api/auth/validate-otp";
   static const String verifyEmail = "api/auth/verify-email";
+  static const String resendOtp = "api/auth/resend-otp";
   static const String home = "products";
   static const String categories = "products/categories";
   static const String products = "products";
