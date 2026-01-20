@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shopio_app/core/api/api_consumer.dart';
 import 'package:shopio_app/core/api/end_points.dart';
 
@@ -16,6 +18,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<dynamic> getHomeData() async {
     final response = await apiConsumer.get(EndPoints.home);
+    log("Calling: $response");
+
     return response;
   }
 
@@ -29,7 +33,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<dynamic> searchProducts(String text) async {
     final response = await apiConsumer.get(
       EndPoints.productsSearch,
-      queryParameters: {'q': text},
+      data: {'q': text},
     );
     return response;
   }

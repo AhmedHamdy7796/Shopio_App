@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopio_app/core/di/app_locator.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/forgotpassword/forgot_pass_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'core/theme/app_theme.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/cubit/theme_cubit.dart';
@@ -26,6 +29,7 @@ import 'core/api/dio_consumer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
 
   final sharedPrefs = await SharedPreferences.getInstance();
   final dio = Dio();
@@ -76,6 +80,8 @@ void main() async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => ThemeCubit(prefs: sharedPrefs)),
+          BlocProvider(create: (_) => getIt.get<ForgotPasswordCubit>()),
+          BlocProvider(create: (_) => getIt.get<LoginCubit>()),
           BlocProvider(
             create: (context) =>
                 AuthCubit(authRepository: context.read<AuthRepository>()),

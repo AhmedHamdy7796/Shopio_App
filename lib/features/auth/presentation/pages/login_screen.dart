@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shopio_app/core/routes/app_routes.dart';
 import 'package:shopio_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:shopio_app/features/auth/presentation/cubit/login/login_state.dart';
 import 'package:shopio_app/features/auth/presentation/widgets/auth_button.dart';
 import 'package:shopio_app/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:shopio_app/core/utils/validators.dart';
@@ -28,23 +30,23 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    var cubit = context.read<LoginCubit>();
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state is AuthLoginSuccess) {
+        if (state is LoginSuccess) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             Routes.home,
             (route) => false,
           );
-        } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(content: Text("success"), backgroundColor: Colors.green),
+          );
+        } else if (state is LoginFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error), backgroundColor: Colors.red),
           );
         }
       },
@@ -55,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 40.h),
               child: Form(
-                key: _formKey,
+                key: cubit.loginFormKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -106,7 +108,7 @@ class _LoginViewState extends State<LoginView> {
                     ).animate().fadeIn(delay: 200.ms),
                     SizedBox(height: 48.h),
                     AuthTextField(
-                      controller: _emailController,
+                      controller: cubit.emailController,
                       label: 'Email',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
@@ -114,7 +116,7 @@ class _LoginViewState extends State<LoginView> {
                     ).animate().fadeIn(delay: 300.ms),
                     SizedBox(height: 24.h),
                     AuthTextField(
-                      controller: _passwordController,
+                      controller: cubit.passwordController,
                       label: 'Password',
                       icon: Icons.lock_outline,
                       isPassword: true,
@@ -142,12 +144,7 @@ class _LoginViewState extends State<LoginView> {
                       text: 'Log In',
                       isLoading: state is AuthLoading,
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthCubit>().login(
-                            _emailController.text,
-                            _passwordController.text,
-                          );
-                        }
+                        cubit.loginValidation();
                       },
                     ).animate().fadeIn(delay: 500.ms),
                     SizedBox(height: 32.h),

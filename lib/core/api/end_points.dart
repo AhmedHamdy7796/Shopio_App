@@ -5,9 +5,9 @@ class EndPoints {
   static const String verifyCode = "api/auth/validate-otp";
   static const String verifyEmail = "api/auth/verify-email";
   static const String resendOtp = "api/auth/resend-otp";
-  static const String home = "products";
+  static const String home = "api/products";
   static const String categories = "products/categories";
-  static const String products = "products";
+  static const String products = "api/products";
   static const String productsSearch = "products/search";
   static const String carts = "carts";
   static const String favorites = "favorites";

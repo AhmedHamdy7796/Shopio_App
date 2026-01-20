@@ -15,17 +15,24 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
       final response = await homeRemoteDataSource.getHomeData();
-      if (response is Map && response.containsKey('products')) {
-        final List<dynamic> data = response['products'];
+
+      if (response is Map && response.containsKey('items')) {
+        final List<dynamic> data = response['items'];
+
         final products = data
             .map((json) => ProductModel.fromJson(json))
             .toList();
+
         return Right(products);
       } else {
-        return Left(ServerFailure(message: "Invalid API Response"));
+        return Left(
+          ServerFailure(message: "Invalid API Response: missing items"),
+        );
       }
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(ServerFailure(message: "Unexpected Error: $e"));
     }
   }
 

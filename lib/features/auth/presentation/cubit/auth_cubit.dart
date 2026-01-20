@@ -10,20 +10,20 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.authRepository}) : super(AuthInitial());
 
-  Future<void> login(String email, String password) async {
-    emit(AuthLoading());
-    final result = await authRepository.login(email: email, password: password);
-    result.fold(
-      (failure) => emit(
-        AuthFailure(
-          failure is ServerFailure
-              ? failure.message ?? 'Login failed'
-              : 'Login failed',
-        ),
-      ),
-      (data) => emit(AuthLoginSuccess()),
-    );
-  }
+  // Future<void> login(String email, String password) async {
+  //   emit(AuthLoading());
+  //   final result = await authRepository.login(email: email, password: password);
+  //   result.fold(
+  //     (failure) => emit(
+  //       AuthFailure(
+  //         failure is ServerFailure
+  //             ? failure.message ?? 'Login failed'
+  //             : 'Login failed',
+  //       ),
+  //     ),
+  //     (data) => emit(AuthLoginSuccess()),
+  //   );
+  // }
 
   Future<void> register(
     String firstName,
