@@ -266,6 +266,30 @@ class _HomeViewState extends State<HomeView> {
                 builder: (context, state) {
                   if (state is HomeLoading) {
                     return const Center(child: CircularProgressIndicator());
+                  } else if (state is HomeError) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 48.h,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            state.message,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                context.read<HomeCubit>().loadHomeData(),
+                            child: const Text("Retry"),
+                          ),
+                        ],
+                      ),
+                    );
                   } else if (state is HomeLoaded) {
                     if (state.isLoading) {
                       return const Center(child: CircularProgressIndicator());
