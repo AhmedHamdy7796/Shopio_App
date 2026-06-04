@@ -9,29 +9,7 @@ class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
   final List<CartItemModel> _items = [
-    // Mock initial items
-    CartItemModel(
-      product: const ProductModel(
-        id: '1',
-        title: 'Nike Air Max',
-        description: '...',
-        price: 120.0,
-        imageUrl: 'assets/images/product1.png',
-        category: 'Shoes',
-      ),
-      quantity: 1,
-    ),
-    CartItemModel(
-      product: const ProductModel(
-        id: '3',
-        title: 'Sony Headphones',
-        description: '...',
-        price: 200.0,
-        imageUrl: 'assets/images/product3.png',
-        category: 'Electronics',
-      ),
-      quantity: 2,
-    ),
+    
   ];
 
   void loadCart() {

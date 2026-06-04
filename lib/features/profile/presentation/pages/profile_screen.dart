@@ -93,7 +93,7 @@ class ProfileView extends StatelessWidget {
             ).animate().scale(),
             SizedBox(height: 16.h),
             Text(
-              'Alex Jordan',
+              context.read<AuthCubit>().currentUser?.name ?? 'User',
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class ProfileView extends StatelessWidget {
               ),
             ).animate().fadeIn(),
             Text(
-              'alex.jordan@example.com',
+              context.read<AuthCubit>().currentUser?.email ?? '',
               style: TextStyle(fontSize: 14.sp, color: Colors.grey),
             ).animate().fadeIn(),
             SizedBox(height: 32.h),
