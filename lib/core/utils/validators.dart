@@ -1,22 +1,25 @@
 import 'app_strings.dart';
 
 class Validator {
-  static String? validateEmail(String? email) {
-    if (email == null || email.isEmpty) {
+  static String? validateEmail(String email) {
+    final regex = RegExp(r'^[a-zA-Z0-9._%+-]{6,}@gmail\.com$');
+
+    if (email.isEmpty) {
       return AppStrings.emailRequired;
-    }
-
-    // Standard email regex
-    final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-
-    if (!regex.hasMatch(email)) {
-      return AppStrings.emailInvalidFormat;
+    } else if (!email.split("@")[0].contains(RegExp(r'^.{6,}$'))) {
+      return AppStrings.emailMinLength;
+    } else if (!regex.hasMatch(email)) {
+      if (!email.contains("@gmail.com")) {
+        return AppStrings.emailMustEndGmail;
+      } else {
+        return AppStrings.emailInvalidFormat;
+      }
     }
     return null;
   }
 
-  static String? validatePassword(String? password) {
-    if (password == null || password.isEmpty) {
+  static String? validatePassword(String password) {
+    if (password.isEmpty) {
       return AppStrings.fieldRequired;
     }
     if (password.length < 8) {
@@ -34,11 +37,25 @@ class Validator {
     if (!RegExp(r'[@$!%*?&]').hasMatch(password)) {
       return AppStrings.passwordAtLeast1SpecialChar;
     }
+    // if (passwordController.text != confirmPassController.text) {
+    //   return AppStrings.passwordNotTheSame;
+    // }
     return null;
   }
 
-  static String? validatePhoneNumber(String? phoneNumber) {
-    if (phoneNumber == null || phoneNumber.isEmpty) {
+  static String? validateID(String id) {
+    final regex = RegExp(r'^\d{14}$');
+
+    if (id.isEmpty) {
+      return AppStrings.idRequired;
+    } else if (!regex.hasMatch(id)) {
+      return AppStrings.idInvalid;
+    }
+    return null;
+  }
+
+  static String? validatePhoneNumber(String phoneNumber) {
+    if (phoneNumber.isEmpty) {
       return AppStrings.phoneRequired;
     }
     if (!RegExp(r'^01[0125]').hasMatch(phoneNumber)) {
@@ -53,12 +70,11 @@ class Validator {
     return null;
   }
 
-  static String? validateUserName(String? userName) {
-    if (userName == null || userName.isEmpty) {
-      return AppStrings.usernameRequired;
-    }
+  static String? validateUserName(String userName) {
     final regex = RegExp(r'^[a-zA-Z][a-zA-Z0-9_ ]{2,}$');
-    if (!RegExp(r'^[a-zA-Z]').hasMatch(userName)) {
+    if (userName.isEmpty) {
+      return AppStrings.usernameRequired;
+    } else if (!RegExp(r'^[a-zA-Z]').hasMatch(userName)) {
       return AppStrings.usernameMustStartWithLetter;
     } else if (userName.length < 3) {
       return AppStrings.usernameMinLength;
