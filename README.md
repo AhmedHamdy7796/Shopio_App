@@ -1,7 +1,20 @@
 # shopio_app
 
-A new Flutter project.
+Shopio E-Commerce App
+A full-featured e-commerce mobile application built with Flutter, demonstrating production-ready practices.
 
+ Technical Highlights
+Architecture: Feature-first Clean Architecture (Data/Domain/Presentation).
+
+State Management: BLoC/Cubit for predictable state mutations.
+
+Dual API Integration: Consumes DummyJSON for product catalog and a custom .NET API for Authentication.
+
+Performance: Utilizes SliverGrid for optimal scrolling and compute() for parsing heavy JSON payloads in background isolates.
+
+Error Handling: Functional error routing using dartz (Either<Failure, T>)
+
+3. تن
 ## Getting Started
 
 This project is a starting point for a Flutter application.
